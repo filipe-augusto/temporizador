@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script>
+        window.onload = function () {
+
+            var obj = {}
+            var startCronometro;
+            var segundos = document.getElementById("seg");
+            var minutos = document.getElementById("min");
+            var horas = document.getElementById("hora");
+            var segAtual = parseInt(segundos.lastChild.nodeValue);
+            var minAtual = parseInt(minutos.lastChild.nodeValue);
+            var horaAtual = parseInt(hora.lastChild.nodeValue);
+            var ativo = false;
+
+
+            obj.iniciar = function () {
+                if (!ativo) {
+                    ativo = true;
+                    startCronometro = setInterval(function () {
+                        if (segAtual + 1 < 60) {
+                            segAtual++;
+                            addText(segAtual, segundos);
+
+                        } else {
+                            segAtual = 0;
+                            if (minAtual + 1 < 60) {
+                                minAtual++;
+                                addText(segAtual, segundos);
+                                addText(minAtual, minutos)
+                            } else {
+                                horaAtual++;
+                                minAtual = 0;
+                                segAtual = 0;
+                                minAtual = 0;
+
+                                addText(segAtual, segundos);
+                                addText(minAtual, minutos);
+                                addText(horaAtual, horas);
+                            }
+                        }
+                    }, 999);
+                } else {
+                    alert("ops!")
+                }
+            };
+
+            obj.parar = function () {
+                if (ativo) {
+                    ativo = false;
+                    clearInterval(startCronometro)
+                } else {
+                    alert("ops!")
+                }
+            };
+            obj.reniciar = function () {
+                segAtual = 0;
+                minAtual = 0;
+                horaAtual = 0;
+                addText(segAtual, segundos);
+                addText(minAtual, minutos);
+                addText(horaAtual, horas);
+                clearInterval(startCronometro);
+                ativo = false;
+
+            }
+
+            function addText(texto, tipo) {
+                tipo.removeChild(tipo.lastChild);
+                tipo.appendChild(document.createTextNode(texto));
+            }
+            document.getElementById("btnStart").onclick = function () {
+                obj.iniciar()
+            }
+            document.getElementById("btnStop").onclick = function () {
+                obj.parar();
+            }
+            document.getElementById("btnReset").onclick = function () {
+                obj.reniciar();
+            }
+
+            function addText(texto, tipo) {
+                tipo.removeChild(tipo.lastChild);
+                tipo.appendChild(document.createTextNode(texto));
+            }
+            //---------------------------------------------------------
+            /*tabela*/
+
+
+
+            document.getElementById("btnAddTable").onclick = function () { //addiciona na tablea e cria o botao e classe do botao
+                ativo = false;
+                clearInterval(startCronometro)
+                var description = prompt("Descrição");
+                var tempo = horaAtual + ":" + minAtual + ":" + segAtual;
+                var tabela = document.getElementById("tab")
+                var linha = document.createElement("tr");
+                var col1 = document.createElement("td");
+                var col2 = document.createElement("td");
+                var col3 = document.createElement("td");
+                var col4 = document.createElement("td");
+                col4.style.border = "black 1px solid"
+                var btn = document.createElement("button");
+                var span = document.createElement("span");
+                span.className = "glyphicon glyphicon-minus";
+                btn.id = "tirar";
+                btn.onclick = function () { // funcao para remover a linha
+                    tabela.removeChild(linha)
+                }
+                btn.type = "button"
+                btn.appendChild(span);
+                btn.style.backgroundColor = ""
+                var d = new Date();
+                var horas = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                //  alert(description + ":" + tempo)
+                col1.appendChild(document.createTextNode(description))
+                col2.appendChild(document.createTextNode(tempo))
+                col3.appendChild(document.createTextNode(horas))
+                col4.appendChild(btn)
+                linha.appendChild(col1);
+                linha.appendChild(col2);
+                linha.appendChild(col3);
+                linha.appendChild(col4);
+                tabela.appendChild(linha);
+            }
+
+
+            /* document.getElementById("addOuther").onclick = function () {
+            var painel2 = document.getElementById("painel2");
+            var painel = document.getElementById("painel");
+            var clone = painel.cloneNode(true);
+            painel2.appendChild(clone);
+            }*/
+        }
+    </script>
+    <style>
+        body {
+            background-color: black;
+        }
+
+        #label {
+            border: 1px solid black;
+            width: 240px;
+            height: 50px;
+            text-align: center;
+            margin: 2px;
+
+        }
+
+        p {
+            font-size: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        button {
+            color: greenyellow;
+            background-color: black;
+            border: 1px solid black;
+            border-radius: 50%;
+            margin: 10px 6px 5px 3px;
+        }
+
+        button:hover {
+            color: black;
+            background-color: greenyellow;
+        }
+
+
+
+        #painel {
+            border: 1px solid black;
+            width: 250px;
+            text-align: center;
+            color: greenyellow;
+            background-color: black;
+            margin: 50px 0px 0px 50px;
+        }
+
+
+        /*        #plusPainel {
+            margin: 5px 0px 20px 40px;
+        }*/
+        table,
+        th,
+        td {
+            border: 1px solid rgb(37, 37, 37);
+            border-collapse: collapse;
+            width: 100%;
+            color: greenyellow;
+            background-color: black;
+        }
+
+        th {
+            text-align: center;
+            padding: 3px 10px 5px 10px;
+        }
+
+        table,
+        th {
+            text-align: center;
+        }
+
+
+        #tabela {
+            border: 1px solid black;
+            width: 500px;
+            height: 100%;
+            margin: 50px 10px 10px 20px;
+        }
+
+        #painel,
+        #tabela {
+            float: left;
+        }
+
+        .fisrtr {
+            background-color: rgb(34, 31, 31);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="painel">
+        <div id="label">
+            <p><span id="hora">0</span>:<span id="min">59</span>:<span id="seg">30</span> </span></p>
+        </div>
+        <div id="btns">
+            <button id="btnStart"><span class="glyphicon glyphicon-play"></span></button>
+            <button id="btnStop"><span class="glyphicon glyphicon-stop"></span></button>
+            <button id="btnReset"><span class="glyphicon glyphicon-repeat"></span></button>
+            <button id="btnAddTable"><span class=" glyphicon glyphicon-saved"></span></button>
+
+        </div>
+    </div>
+    <!-- <div id="plusPainel">
+        <button id="addOuther"><span class="glyphicon glyphicon-plus"></button>
+    </div>
+    <div id="painel2"> </div>-->
+    <div id="tabela">
+        <table id="tab">
+            <thead>
+                <tr>
+                    <th class="fisrtr">Descrição</th>
+                    <th class="fisrtr">Tempo</th>
+                    <th class="fisrtr">Hora</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+            </tbody>
+
+        </table>
+    </div>
+
+</body>
+
+</html>
